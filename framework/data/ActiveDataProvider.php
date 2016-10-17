@@ -102,7 +102,9 @@ class ActiveDataProvider extends BaseDataProvider
         }
         $query = clone $this->query;
         if (($pagination = $this->getPagination()) !== false) {
-            $pagination->totalCount = $this->getTotalCount();
+            if (0 === ($pagination->totalCount = $this->getTotalCount())) {
+                return [];
+            }
             $query->limit($pagination->getLimit())->offset($pagination->getOffset());
         }
         if (($sort = $this->getSort()) !== false) {
